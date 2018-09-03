@@ -20,4 +20,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.yanzhenjie.zbar:zbar:1.0.0'
 }
