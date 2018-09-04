@@ -1,29 +1,39 @@
 package com.wzq.scanner;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.wzq.scan.ScanView;
+
 public class MainActivity extends AppCompatActivity {
 
-    // Used to load the 'native-lib' library on application startup.
-    static {
-        System.loadLibrary("native-lib");
-    }
+    private ScanView scanView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Example of a call to a native method
-        TextView tv = (TextView) findViewById(R.id.sample_text);
-        tv.setText(stringFromJNI());
+        init();
     }
 
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-    public native String stringFromJNI();
+    private void init() {
+        scanView = findViewById(R.id.sv_view);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        scanView.openCamera();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        scanView.closeCamera();
+    }
 }
