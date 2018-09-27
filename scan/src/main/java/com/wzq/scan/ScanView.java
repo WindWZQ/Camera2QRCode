@@ -10,13 +10,11 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
 import android.support.annotation.NonNull;
-import android.test.suitebuilder.annotation.MediumTest;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Surface;
+import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.TextureView;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
@@ -39,7 +37,8 @@ public class ScanView extends RelativeLayout {
     private ScanCallback mScanCallback;
 
     // view
-    private TextureView mTextureView;
+    private SurfaceView mSurfaceView;
+    private SurfaceHolder mSurfaceViewHolder;
 
     // camera参数
     private boolean isFlashSupport;
@@ -60,34 +59,17 @@ public class ScanView extends RelativeLayout {
     }
 
     private void initView() {
-        mTextureView = new TextureView(mContext);
-        // todo
-        mTextureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
-            @Override
-            public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+        LogUtil.e(TAG, "initView");
+        mSurfaceView = new SurfaceView(mContext);
+        mSurfaceViewHolder = mSurfaceView.getHolder();
+        mSurfaceViewHolder.addCallback(surfaceCallback);
 
-            }
-
-            @Override
-            public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-
-            }
-
-            @Override
-            public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-                return false;
-            }
-
-            @Override
-            public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-
-            }
-        });
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        addView(mTextureView, layoutParams);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(640, 480);
+        addView(mSurfaceView, layoutParams);
     }
 
     private void initCamera() {
+        LogUtil.e(TAG, "initCamera");
         mCameraManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
 
         if (null != mCameraManager) {
@@ -118,6 +100,8 @@ public class ScanView extends RelativeLayout {
 
     @SuppressLint("MissingPermission")
     public void openCamera() {
+        LogUtil.e(TAG, "openCamera");
+
         try {
             //打开相机预览
             if (!TextUtils.isEmpty(mCameraId)) {
@@ -131,17 +115,37 @@ public class ScanView extends RelativeLayout {
         }
     }
 
+    // surface回调
+    private SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
+        @Override
+        public void surfaceCreated(SurfaceHolder holder) {
+            LogUtil.e(TAG, "surfaceCreated");
+        }
+
+        @Override
+        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+            LogUtil.e(TAG, "surfaceChanged");
+            openCamera();
+        }
+
+        @Override
+        public void surfaceDestroyed(SurfaceHolder holder) {
+            LogUtil.e(TAG, "surfaceDestroyed");
+        }
+    };
 
     // 相机状态回调
     private CameraDevice.StateCallback mStateCallback = new CameraDevice.StateCallback() {
         @Override
         public void onOpened(@NonNull CameraDevice cameraDevice) {
+            LogUtil.e(TAG, "StateCallback onOpened");
             mCameraDevice = cameraDevice;
             createCameraPreviewSession();
         }
 
         @Override
         public void onDisconnected(@NonNull CameraDevice cameraDevice) {
+            LogUtil.e(TAG, "StateCallback onDisconnected");
             cameraDevice.close();
             mCameraDevice = null;
             backError(ScanErrorEnum.CAMERA_CLOSE);
@@ -149,6 +153,7 @@ public class ScanView extends RelativeLayout {
 
         @Override
         public void onError(@NonNull CameraDevice cameraDevice, int error) {
+            LogUtil.e(TAG, "StateCallback onError");
             cameraDevice.close();
             mCameraDevice = null;
             backError(ScanErrorEnum.CAMERA_OPEN_FAIL);
@@ -157,21 +162,20 @@ public class ScanView extends RelativeLayout {
 
     // 开启session，预览
     private void createCameraPreviewSession() {
+        LogUtil.e(TAG, "createCameraPreviewSession");
         try {
-            SurfaceTexture surfaceTexture = mTextureView.getSurfaceTexture();
-            Surface surface = new Surface(surfaceTexture);
-
             //设置了一个具有输出Surface的CaptureRequest.Builder。
             mPreviewRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-            mPreviewRequestBuilder.addTarget(surface);
+            mPreviewRequestBuilder.addTarget(mSurfaceViewHolder.getSurface());
 
             List<Surface> surfaceList = new ArrayList<>();
-            surfaceList.add(surface);
+            surfaceList.add(mSurfaceViewHolder.getSurface());
 
             //创建一个CameraCaptureSession来进行相机预览。
             mCameraDevice.createCaptureSession(surfaceList, new CameraCaptureSession.StateCallback() {
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
+                    LogUtil.e(TAG, "createCameraPreviewSession onConfigured");
                     // 会话准备好后，我们开始显示预览
                     mCaptureSession = cameraCaptureSession;
                     try {
@@ -190,6 +194,7 @@ public class ScanView extends RelativeLayout {
 
                 @Override
                 public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
+                    LogUtil.e(TAG, "createCameraPreviewSession onConfigureFailed");
                     backError(ScanErrorEnum.CAMERA_PREVIEW_FAIL);
                 }
             }, null);
@@ -216,10 +221,6 @@ public class ScanView extends RelativeLayout {
         if (null != mCameraDevice) {
             mCameraDevice.close();
         }
-    }
-
-    private void logger(String content) {
-        Log.e(TAG, content);
     }
 
 }

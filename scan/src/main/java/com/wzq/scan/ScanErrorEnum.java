@@ -8,16 +8,16 @@ public enum ScanErrorEnum {
     CAMERA_PREVIEW_FAIL(4, "摄像头预览失败"),
     CAMERA_UNKNOWN_FAIL(9, "未知错误");
 
-    private int id;
+    private int code;
     private String reason;
 
-    ScanErrorEnum(int id, String reason) {
-        this.id = id;
+    ScanErrorEnum(int code, String reason) {
+        this.code = code;
         this.reason = reason;
     }
 
     public int getId() {
-        return this.id;
+        return this.code;
     }
 
     public String getReason() {
