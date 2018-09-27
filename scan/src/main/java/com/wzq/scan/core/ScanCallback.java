@@ -1,4 +1,4 @@
-package com.wzq.scan;
+package com.wzq.scan.core;
 
 public interface ScanCallback {
 

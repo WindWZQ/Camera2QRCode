@@ -1,4 +1,4 @@
-package com.wzq.scan;
+package com.wzq.scan.core;
 
 public enum ScanErrorEnum {
     CAMERA_NOT_SUPPORT(0, "不支持camera2"),

@@ -1,8 +1,7 @@
-package com.wzq.scan;
+package com.wzq.scan.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
@@ -15,8 +14,11 @@ import android.util.AttributeSet;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+
+import com.wzq.scan.util.LogUtil;
+import com.wzq.scan.core.ScanCallback;
+import com.wzq.scan.core.ScanErrorEnum;
 
 import java.util.ArrayList;
 import java.util.List;
