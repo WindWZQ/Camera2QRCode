@@ -39,7 +39,7 @@ class ScanActivity : AppCompatActivity() {
                 .setTargetRotation(Surface.ROTATION_0)
                 .build()
 
-        val analyzerThread = HandlerThread("BarcodeAnalyzer").apply { start() }
+        val analyzerThread = HandlerThread("CodeAnalyzer").apply { start() }
         // 解析设置
         val analysisConfig = ImageAnalysisConfig.Builder()
                 .setImageReaderMode(ImageAnalysis.ImageReaderMode.ACQUIRE_LATEST_IMAGE)
