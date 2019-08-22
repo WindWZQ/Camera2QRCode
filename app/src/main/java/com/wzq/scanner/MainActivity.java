@@ -1,7 +1,11 @@
 package com.wzq.scanner;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.wzq.scan.ui.ScanActivity;
 
 public class MainActivity extends AppCompatActivity {
     private String TAG = this.getClass().getSimpleName();
@@ -15,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
+        Intent intent = new Intent(this, ScanActivity.class);
+        startActivity(intent);
     }
 
 }
