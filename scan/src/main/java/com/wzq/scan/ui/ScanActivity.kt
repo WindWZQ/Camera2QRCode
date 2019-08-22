@@ -32,8 +32,9 @@ class ScanActivity : AppCompatActivity() {
 
         // 预览设置
         val previewConfig = PreviewConfig.Builder()
-                .setTargetAspectRatio(Rational(height, width))
-                .setTargetResolution(Size(height, width))
+//                .setTargetAspectRatio(Rational(height, width))
+                .setTargetAspectRatio(Rational(1, 20))
+                .setTargetResolution(Size(500, 500))
                 .setLensFacing(CameraX.LensFacing.BACK)
                 .setTargetRotation(Surface.ROTATION_0)
                 .build()
