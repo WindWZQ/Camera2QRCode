@@ -38,8 +38,8 @@ class ScanActivity : AppCompatActivity() {
     private fun startCamera() {
         // Create configuration object for the viewfinder use case
         val previewConfig = PreviewConfig.Builder().apply {
-            setTargetAspectRatio(Rational(1, 1))
-            setTargetResolution(Size(1080, 1080))
+            setTargetAspectRatio(Rational(16, 9))
+            setTargetResolution(Size(1920, 1080))
             setLensFacing(CameraX.LensFacing.BACK)
             setTargetRotation(Surface.ROTATION_0)
         }.build()

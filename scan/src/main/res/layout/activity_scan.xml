@@ -9,7 +9,7 @@
     <TextureView
         android:id="@+id/viewFinder"
         android:layout_width="1080px"
-        android:layout_height="1080px"
+        android:layout_height="1920px"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
