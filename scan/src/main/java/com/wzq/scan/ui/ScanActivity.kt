@@ -41,7 +41,6 @@ class ScanActivity : AppCompatActivity() {
             setTargetAspectRatio(Rational(16, 9))
             setTargetResolution(Size(1920, 1080))
             setLensFacing(CameraX.LensFacing.BACK)
-            setTargetRotation(Surface.ROTATION_0)
         }.build()
 
         // Build the viewfinder use case
