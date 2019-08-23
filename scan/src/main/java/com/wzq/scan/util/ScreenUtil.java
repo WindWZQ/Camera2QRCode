@@ -20,4 +20,18 @@ public class ScreenUtil {
         return outMetrics.heightPixels;
     }
 
+    public static int getRealWidth(Context context) {
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getRealMetrics(outMetrics);
+        return outMetrics.widthPixels;
+    }
+
+    public static int getRealHeight(Context context) {
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getRealMetrics(outMetrics);
+        return outMetrics.heightPixels;
+    }
+
 }
