@@ -9,15 +9,11 @@ import com.yanzhenjie.zbar.Image
 import com.yanzhenjie.zbar.ImageScanner
 
 
-class CodeAnalyzer(callback: ScanCallback) : ImageAnalysis.Analyzer {
+abstract class CodeAnalyzer(callback: ScanCallback) : ImageAnalysis.Analyzer {
     private val TAG = this.javaClass.simpleName
     private val mImageScanner = ImageScanner()
 
-    override fun analyze(image: ImageProxy?, rotationDegrees: Int) {
-        if (null == image) {
-            return
-        }
-
+    override fun analyze(image: ImageProxy) {
         val buffer = image.planes[0].buffer
         val data = ByteArray(buffer.remaining())
         val height = image.height

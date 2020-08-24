@@ -7,9 +7,10 @@ import android.util.Size
 import android.view.Surface
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.camera2.internal.PreviewConfigProvider
 import androidx.camera.core.CameraX
 import androidx.camera.core.Preview
-import androidx.camera.core.PreviewConfig
+import androidx.camera.core.impl.PreviewConfig
 import com.wzq.scan.R
 import com.wzq.scan.core.ScanCallback
 import com.wzq.scan.core.ScanErrorEnum
@@ -36,33 +37,33 @@ class ScanActivity : AppCompatActivity() {
     }
 
     private fun startCamera() {
-        // Create configuration object for the viewfinder use case
-        val previewConfig = PreviewConfig.Builder().apply {
-            setTargetAspectRatio(Rational(1, 1))
-            setTargetResolution(Size(640, 640))
-            setLensFacing(CameraX.LensFacing.BACK)
-        }.build()
-
-        // Build the viewfinder use case
-        val preview = Preview(previewConfig)
-
-        // Every time the viewfinder is updated, recompute layout
-        preview.setOnPreviewOutputUpdateListener {
-
-            // To update the SurfaceTexture, we have to remove it and re-add it
-            val parent = viewFinder.parent as ViewGroup
-            parent.removeView(viewFinder)
-            parent.addView(viewFinder, 0)
-
-            viewFinder.surfaceTexture = it.surfaceTexture
-            updateTransform()
-        }
-
-        // Bind use cases to lifecycle
-        // If Android Studio complains about "this" being not a LifecycleOwner
-        // try rebuilding the project or updating the appcompat dependency to
-        // version 1.1.0 or higher.
-        CameraX.bindToLifecycle(this, preview)
+//        // Create configuration object for the viewfinder use case
+//        val previewConfig = PreviewConfig.Builder().apply {
+//            setTargetAspectRatio(Rational(1, 1))
+//            setTargetResolution(Size(640, 640))
+//            setLensFacing(CameraX.LensFacing.BACK)
+//        }.build()
+//
+//        // Build the viewfinder use case
+//        val preview = Preview(previewConfig)
+//
+//        // Every time the viewfinder is updated, recompute layout
+//        preview.setOnPreviewOutputUpdateListener {
+//
+//            // To update the SurfaceTexture, we have to remove it and re-add it
+//            val parent = viewFinder.parent as ViewGroup
+//            parent.removeView(viewFinder)
+//            parent.addView(viewFinder, 0)
+//
+//            viewFinder.surfaceTexture = it.surfaceTexture
+//            updateTransform()
+//        }
+//
+//        // Bind use cases to lifecycle
+//        // If Android Studio complains about "this" being not a LifecycleOwner
+//        // try rebuilding the project or updating the appcompat dependency to
+//        // version 1.1.0 or higher.
+//        CameraX.bindToLifecycle(this, preview)
     }
 
     private fun updateTransform() {
